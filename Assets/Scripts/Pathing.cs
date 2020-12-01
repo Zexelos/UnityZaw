@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 public class Pathing : MonoBehaviour
 {
-    [SerializeField] GameObject path;
     public Transform[] points;
+    [SerializeField] GameObject path = default;
     [SerializeField] int destPoint = 0;
-    [SerializeField] NavMeshAgent agent;
+    [SerializeField] NavMeshAgent agent = default;
 
     // Start is called before the first frame update
     void Start()
@@ -16,13 +16,11 @@ public class Pathing : MonoBehaviour
         points = path.GetComponentsInChildren<Transform>();
 
         List<Transform> tList= points.ToList();
-        tList.RemoveAt(0);
+        tList.RemoveAt(0); 
         points = tList.ToArray();
 
-        for (int i = 0; i < points.Length; i++)
-        {
-            Debug.Log(points[i].position.ToString());
-        }
+        foreach (var item in tList)
+            Debug.Log(item.position.ToString());
 
         agent.autoBraking = false;
 
@@ -44,5 +42,7 @@ public class Pathing : MonoBehaviour
         agent.destination = points[destPoint].position;
 
         destPoint = (destPoint + 1) % points.Length;
+
+        Debug.Log($"Current destination: {points[destPoint].gameObject.name}\n{points[destPoint].position}");
     }
 }
